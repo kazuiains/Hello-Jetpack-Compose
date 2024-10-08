@@ -9,16 +9,18 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.AccountCircle
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Scaffold
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -37,19 +39,49 @@ import id.adiyusuf.hjc.ui.theme.HelloJetpackComposeTheme
 
 data class User(val name: String, val status: String)
 
+private val sampleName = listOf(
+    "Andre",
+    "Desta",
+    "Parto",
+    "Wendy",
+    "Komeng",
+    "Raffi Ahmad",
+    "Andhika Pratama",
+    "Vincent Ryan Rompies"
+)
+
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             HelloJetpackComposeTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android", modifier = Modifier.padding(innerPadding)
-                    )
-                }
+                MyApp()
             }
         }
+    }
+}
+
+@Composable
+fun MyApp(modifier: Modifier = Modifier) {
+    Surface(
+        modifier = Modifier.fillMaxSize(),
+        color = MaterialTheme.colorScheme.background
+    ) {
+        GreetingList(sampleName)
+    }
+}
+
+@Composable
+fun GreetingList(names: List<String>, modifier: Modifier = Modifier) {
+    if (names.isNotEmpty()) {
+        Column {
+            for (name in names) {
+                GreetingVersion2(name)
+            }
+        }
+    } else {
+        Text("No people to greet :(")
     }
 }
 
@@ -108,11 +140,16 @@ class UserPreviewParameterProvider : PreviewParameterProvider<User> {
 
 @Composable
 fun GreetingVersion2(name: String, modifier: Modifier = Modifier) {
-    Row {
+    Row(
+        modifier = Modifier.padding(8.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
         Image(
+            modifier = Modifier.size(80.dp),
             painter = painterResource(R.drawable.jetpack_compose),
             contentDescription = "Logo Jetpack Compose"
         )
+        Spacer(modifier = Modifier.width(8.dp))
         Column {
             Text(
                 text = "Hello $name!",
@@ -120,7 +157,7 @@ fun GreetingVersion2(name: String, modifier: Modifier = Modifier) {
                 fontWeight = FontWeight.Bold
             )
             Text(
-                text = "Hello $name!",
+                text = "Welcome to My House!",
             )
         }
     }
@@ -191,5 +228,18 @@ private fun ContactCardCardPreview(
 fun GreetingVersion2Preview() {
     HelloJetpackComposeTheme {
         GreetingVersion2("Android")
+    }
+}
+
+@Preview(
+    showBackground = true,
+    device = Devices.PIXEL_4,
+    name = "My App Preview",
+    group = "My App"
+)
+@Composable
+private fun MyAppPreview() {
+    HelloJetpackComposeTheme {
+        MyApp()
     }
 }
