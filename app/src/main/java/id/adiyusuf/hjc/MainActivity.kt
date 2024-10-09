@@ -17,13 +17,20 @@ import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.ExpandLess
+import androidx.compose.material.icons.outlined.ExpandMore
 import androidx.compose.material.icons.rounded.AccountCircle
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -140,6 +147,8 @@ class UserPreviewParameterProvider : PreviewParameterProvider<User> {
 
 @Composable
 fun GreetingVersion2(name: String, modifier: Modifier = Modifier) {
+    var isExpanded by remember { mutableStateOf(false) }
+
     Row(
         modifier = Modifier.padding(8.dp),
         verticalAlignment = Alignment.CenterVertically
@@ -150,7 +159,7 @@ fun GreetingVersion2(name: String, modifier: Modifier = Modifier) {
             contentDescription = "Logo Jetpack Compose"
         )
         Spacer(modifier = Modifier.width(8.dp))
-        Column {
+        Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = "Hello $name!",
                 fontSize = 24.sp,
@@ -158,6 +167,12 @@ fun GreetingVersion2(name: String, modifier: Modifier = Modifier) {
             )
             Text(
                 text = "Welcome to My House!",
+            )
+        }
+        IconButton(onClick = { isExpanded = !isExpanded }) {
+            Icon(
+                imageVector = if (isExpanded) Icons.Outlined.ExpandLess else Icons.Outlined.ExpandMore,
+                contentDescription = if (isExpanded) "Show less" else "Show more"
             )
         }
     }
